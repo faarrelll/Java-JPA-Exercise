@@ -1,17 +1,15 @@
 package com.enigma.car_rent;
 
 import com.enigma.car_rent.constant.car_status;
-import com.enigma.car_rent.entity.Cars;
-import com.enigma.car_rent.entity.MaintenanceRecord;
-import com.enigma.car_rent.entity.Users;
-import com.enigma.car_rent.repository.CarsRepository;
-import com.enigma.car_rent.repository.MaintenanceRecordRepository;
-import com.enigma.car_rent.repository.UsersRepository;
+import com.enigma.car_rent.constant.rental_status;
+import com.enigma.car_rent.entity.*;
+import com.enigma.car_rent.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Main {
     static EntityManagerFactory entityManagerFactory;
@@ -22,6 +20,8 @@ public class Main {
         CarsRepository carsRepository = new CarsRepository(entityManager);
         MaintenanceRecordRepository mrr = new MaintenanceRecordRepository(entityManager);
         UsersRepository usersRepository = new UsersRepository(entityManager);
+        RentalsRepository rentalsRepository = new RentalsRepository(entityManager);
+        PaymentsRepository paymentsRepository = new PaymentsRepository(entityManager);
         Users user = Users.builder()
                 .fullName("Farrel Akbar")
                 .email("farrel@gmail.com")
@@ -47,9 +47,25 @@ public class Main {
                 .cost(299999d)
                 .completedAt(LocalDateTime.now())
                 .build();
+        Rentals rentals = Rentals.builder()
+                .user(user)
+                .car(car)
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now())
+                .totalAmount(1000d)
+                .status(rental_status.PENDING)
+                .build();
+        Payments payment = Payments.builder()
+                .rentals(rentals)
+                .amount(1000d)
+                .paymentMethod("Cash")
+                .transactionId(String.valueOf(UUID.randomUUID()))
+                .build();
         carsRepository.save(car);
         mrr.save(record);
         usersRepository.save(user);
+        rentalsRepository.save(rentals);
+        paymentsRepository.save(payment);
     }
 
     protected static void init() {
