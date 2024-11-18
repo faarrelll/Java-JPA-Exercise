@@ -3,8 +3,10 @@ package com.enigma.car_rent;
 import com.enigma.car_rent.constant.car_status;
 import com.enigma.car_rent.entity.Cars;
 import com.enigma.car_rent.entity.MaintenanceRecord;
+import com.enigma.car_rent.entity.Users;
 import com.enigma.car_rent.repository.CarsRepository;
 import com.enigma.car_rent.repository.MaintenanceRecordRepository;
+import com.enigma.car_rent.repository.UsersRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -19,6 +21,15 @@ public class Main {
         init();
         CarsRepository carsRepository = new CarsRepository(entityManager);
         MaintenanceRecordRepository mrr = new MaintenanceRecordRepository(entityManager);
+        UsersRepository usersRepository = new UsersRepository(entityManager);
+        Users user = Users.builder()
+                .fullName("Farrel Akbar")
+                .email("farrel@gmail.com")
+                .phoneNumber("088902944883")
+                .address("Enigma Camp")
+                .drivingLicenseNum("8129ey10e012")
+                .passwordHash("safadskjfb129010")
+                .build();
         Cars car = Cars.builder()
                 .brand("Porsche GT")
                 .model("Sports")
@@ -38,6 +49,7 @@ public class Main {
                 .build();
         carsRepository.save(car);
         mrr.save(record);
+        usersRepository.save(user);
     }
 
     protected static void init() {
