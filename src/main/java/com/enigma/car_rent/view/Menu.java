@@ -2,8 +2,10 @@ package com.enigma.car_rent.view;
 
 import com.enigma.car_rent.entity.Cars;
 import com.enigma.car_rent.entity.MaintenanceRecord;
+import com.enigma.car_rent.entity.Rentals;
 import com.enigma.car_rent.entity.Users;
 import com.enigma.car_rent.service.CarsService;
+import com.enigma.car_rent.service.TransactionService;
 import com.enigma.car_rent.service.UserService;
 import com.enigma.car_rent.utils.ScannerUtils;
 import jakarta.persistence.EntityManager;
@@ -14,12 +16,14 @@ public class Menu {
     EntityManager entityManager;
     CarsService carsService;
     UserService userService;
+    TransactionService transactionService;
 
 
     public Menu(EntityManager entityManager) {
         this.entityManager = entityManager;
         carsService = new CarsService(entityManager);
         userService = new UserService(entityManager);
+        transactionService = new TransactionService(entityManager);
     }
 
     public void printMenu() {
@@ -36,12 +40,22 @@ public class Menu {
         System.out.println("-".repeat(20));
         System.out.println("1. Add Transaction");
         System.out.println("2. Show Transaction");
-        System.out.println("3. Back");
+        System.out.println("3. Confirm Payments");
+        System.out.println("4. Cancel Transaction");
+        System.out.println("5. Return Car");
+        System.out.println("6. Back");
         String choice = ScannerUtils.inputString("Enter your choice");
         switch (choice) {
-            case "1"-> System.out.println("Rental Transaction");
-            case "2"-> System.out.println("Rental Data Management");
-            case "3"-> printMenu();
+            case "1"-> transactionService.addTransaction();
+            case "2"-> {
+                List<Rentals> rentals = transactionService.getRentals();
+                rentals.forEach(System.out::println);
+            }
+            case "3"-> transactionService.addPayment();
+            case "4"-> transactionService.cancelPayment();
+            case "5"-> transactionService.returnCar();
+            case "6"-> printMenu();
+
         }
     }
     public  void printDataManagementMenu() {
@@ -66,9 +80,10 @@ public class Menu {
         System.out.println("3. Show Car By ID");
         System.out.println("4. Update Car");
         System.out.println("5. Delete Car");
-        System.out.println("6. Add Maintenence");
-        System.out.println("7. Show Maintenence Records");
-        System.out.println("8. Back");
+        System.out.println("6. Retire Car");
+        System.out.println("7. Add Maintenence");
+        System.out.println("8. Show Maintenence Records");
+        System.out.println("9. Back");
         String choice = ScannerUtils.inputString("Enter your choice");
         switch (choice) {
             case "1"-> carsService.addCars();
@@ -79,12 +94,13 @@ public class Menu {
             case "3"-> System.out.println(carsService.showCarsById(Integer.parseInt(ScannerUtils.inputString("Enter Car ID"))).toString());
             case "4"-> carsService.updateCars();
             case "5"-> carsService.deleteCarsById(Integer.parseInt(ScannerUtils.inputString("Enter Car ID")));
-            case "6" -> carsService.addMaintenanceRecord();
-            case "7" -> {
+            case "6" -> carsService.retireCar();
+            case "7" -> carsService.addMaintenanceRecord();
+            case "8" -> {
                 List<MaintenanceRecord> maintenenceRecord = carsService.showMaintenanceRecords();
                 maintenenceRecord.forEach(System.out::println);
             }
-            case "8"-> printDataManagementMenu();
+            case "9"-> printDataManagementMenu();
         }
     }
     public void printUserMenu() {

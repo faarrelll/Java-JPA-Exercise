@@ -92,4 +92,10 @@ public class CarsService {
         return maintenanceRecords;
     }
 
+    public void retireCar(){
+        Integer id = Integer.parseInt(ScannerUtils.inputString("Car ID"));
+        Cars car = carsRepository.findById(id);
+        car.setStatus(car_status.RETIRED);
+    }
+
 }

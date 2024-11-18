@@ -12,6 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -38,10 +39,10 @@ public class Rentals {
     private Cars car;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -60,9 +61,16 @@ public class Rentals {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "id : " + id + "\n"+
+                "user : " + user + "\n"+
+                "car : " + car + "\n"+
+                "startDate : " + startDate + "\n"+
+                "endDate : " + endDate + "\n"+
+                "status :" + status + "\n"+
+                "totalAmount :" + totalAmount + "\n"+
+                "createdAt : " + createdAt + "\n"+
+                "updatedAt : " + updatedAt;
+    }
 }
