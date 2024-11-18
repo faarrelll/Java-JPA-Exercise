@@ -16,9 +16,9 @@ public class CarsRepository extends GenericRepository<Cars> {
     }
 
     public List<Cars> findCarsAvailable() {
-        // Gunakan parameter yang di-bind untuk menghindari SQL Injection dan kesalahan dalam penulisan query
+
         return entityManager.createQuery("select e from Cars e where e.status = :status", Cars.class)
-                .setParameter("status", car_status.AVAILABLE) // Pastikan car_status.AVAILABLE adalah enum yang valid
+                .setParameter("status", car_status.AVAILABLE)
                 .getResultList();
     }
 }

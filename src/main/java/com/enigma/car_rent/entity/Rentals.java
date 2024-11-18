@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -60,6 +62,10 @@ public class Rentals {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "rentals", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Payments> payments = new ArrayList<>();
+
 
     @Override
     public String toString() {

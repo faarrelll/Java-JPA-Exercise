@@ -66,7 +66,7 @@ public class Cars {
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     List<MaintenanceRecord> maintenanceRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     List<Rentals> rentalRecord = new ArrayList<>();
 
     @Override
@@ -79,6 +79,8 @@ public class Cars {
                 "color : " + color + "\n"+
                 "mileage : " + mileage + "\n"+
                 "status : " + status + "\n"+
-                "dailyRate : " + dailyRate;
+                "dailyRate : " + dailyRate + "\n"+
+                "created At : " + createdAt + "\n"+
+                "updated At : " + updatedAt ;
     }
 }

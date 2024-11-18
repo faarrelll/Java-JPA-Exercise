@@ -12,6 +12,7 @@ import com.enigma.car_rent.repository.RentalsRepository;
 import com.enigma.car_rent.repository.UsersRepository;
 import com.enigma.car_rent.utils.ScannerUtils;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transaction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,8 +40,8 @@ public class TransactionService {
         carsList.forEach(System.out::println);
         Integer useriId = ScannerUtils.inputInterger("User Id");
         rentals.setUser(usersRepository.findById(useriId));
-        Integer rentalsId = ScannerUtils.inputInterger("Rentals Id");
-        rentals.setCar(carsRepository.findById(rentalsId));
+        Integer carId = ScannerUtils.inputInterger("Cars Id");
+        rentals.setCar(carsRepository.findById(carId));
         rentals.setStartDate(ScannerUtils.inputDate("Start Date"));
         rentals.setEndDate(ScannerUtils.inputDate("End Date"));
         rentals.setStatus(rental_status.PENDING);
@@ -64,17 +65,23 @@ public class TransactionService {
         rentals.setStatus(rental_status.ACTIVE);
         Cars car = carsRepository.findById(rentals.getCar().getId());
         car.setStatus(car_status.RENTED);
+        carsRepository.save(car);
     }
 
     public void cancelPayment() {
         Integer rentalId = ScannerUtils.inputInterger("Rental Id");
         Rentals rentals = rentalsRepository.findById(rentalId);
         rentals.setStatus(rental_status.CANCELLED);
+        rentalsRepository.save(rentals);
     }
 
     public void returnCar(){
-        Integer carId = ScannerUtils.inputInterger("Car Id");
-        Cars cars = carsRepository.findById(carId);
-        cars.setStatus(car_status.AVAILABLE);
+        Integer transId = ScannerUtils.inputInterger("Transaction Id");
+        Rentals transaction = rentalsRepository.findById(transId);
+        Cars car = carsRepository.findById(transaction.getCar().getId());
+        car.setStatus(car_status.AVAILABLE);
+        transaction.setStatus(rental_status.COMPLETED);
+        carsRepository.save(car);
+        rentalsRepository.save(transaction);
     }
 }
