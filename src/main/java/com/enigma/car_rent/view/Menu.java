@@ -2,7 +2,9 @@ package com.enigma.car_rent.view;
 
 import com.enigma.car_rent.entity.Cars;
 import com.enigma.car_rent.entity.MaintenanceRecord;
+import com.enigma.car_rent.entity.Users;
 import com.enigma.car_rent.service.CarsService;
+import com.enigma.car_rent.service.UserService;
 import com.enigma.car_rent.utils.ScannerUtils;
 import jakarta.persistence.EntityManager;
 
@@ -11,11 +13,13 @@ import java.util.List;
 public class Menu {
     EntityManager entityManager;
     CarsService carsService;
+    UserService userService;
 
 
     public Menu(EntityManager entityManager) {
         this.entityManager = entityManager;
         carsService = new CarsService(entityManager);
+        userService = new UserService(entityManager);
     }
 
     public void printMenu() {
@@ -88,16 +92,19 @@ public class Menu {
         System.out.println("User Menu");
         System.out.println("-".repeat(20));
         System.out.println("1. Add User");
-        System.out.println("2. Show User");
-        System.out.println("3. Update User");
+        System.out.println("2. Update User");
+        System.out.println("3. Show User");
         System.out.println("4. Delete User");
         System.out.println("5. Back");
         String choice = ScannerUtils.inputString("Enter your choice");
         switch (choice) {
-            case "1"-> System.out.println("Add User");
-            case "2"-> System.out.println("Show User");
-            case "3"-> System.out.println("Update User");
-            case "4"-> System.out.println("Delete User");
+            case "1"-> userService.addUser();
+            case "2"-> userService.updateUser();
+            case "3"-> {
+             List<Users> usersList = userService.usersList();
+             usersList.forEach(System.out::println);
+            }
+            case "4"-> userService.deleteUser();
             case "5"-> printDataManagementMenu();
         }
     }

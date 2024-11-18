@@ -52,4 +52,16 @@ public class Users {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Override
+    public String toString() {
+        return "id :" + id +
+                "fullName : " + fullName + "\n" +
+                "email : " + email + "\n" +
+                "phoneNumber : " + phoneNumber + "\n" +
+                "address : " + address + "\n" +
+                "drivingLicenseNum : " + drivingLicenseNum + "\n" +
+                "passwordHash : " + passwordHash + "\n" +
+                "createdAt : " + createdAt + "\n" +
+                "updatedAt : " + updatedAt;
+    }
 }
