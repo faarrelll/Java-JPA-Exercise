@@ -10,6 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -60,5 +63,22 @@ public class Cars {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    List<MaintenanceRecord> maintenanceRecords = new ArrayList<>();
 
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
+    List<Rentals> rentalRecord = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return  "id : " + id + "\n"+
+                "brand : " + brand + "\n"+
+                "model : " + model + "\n"+
+                "year: " + year + "\n"+
+                "licensePlate : " + licensePlate  + "\n"+
+                "color : " + color + "\n"+
+                "mileage : " + mileage + "\n"+
+                "status : " + status + "\n"+
+                "dailyRate : " + dailyRate;
+    }
 }

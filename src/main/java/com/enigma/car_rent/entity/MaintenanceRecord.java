@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -32,7 +33,7 @@ public class MaintenanceRecord {
     private Cars car; // Relasi dengan tabel `cars`
 
     @Column(name = "maintenance_date", nullable = false)
-    private LocalDateTime maintenanceDate;
+    private LocalDate maintenanceDate;
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description; // Tipe TEXT untuk deskripsi
@@ -41,7 +42,7 @@ public class MaintenanceRecord {
     private Double cost;
 
     @Column(name = "completed_at")
-    private LocalDateTime completedAt;
+    private LocalDate completedAt;
 
     // Kolom created_at dengan default 'now()' untuk waktu pembuatan
     @CreationTimestamp
@@ -55,4 +56,16 @@ public class MaintenanceRecord {
 
     // Default Constructor, Getter dan Setter sudah disediakan oleh Lomb
 
+    @Override
+    public String toString() {
+        return  "id : " + id + "\n"+
+                "car :" + (car != null ? car.getId()  : "N/A") + "\n"+
+                "brand : " + (car != null ? car.getBrand() : "N/A") + "\n"+
+                "maintenance Date : " + maintenanceDate + "\n"+
+                "description : " + description + "\n"+
+                "cost : " + cost + "\n"+
+                "completedAt : " + completedAt + "\n"+
+                "createdAt : " + createdAt + "\n"+
+                "updatedAt: " + updatedAt;
+    }
 }
